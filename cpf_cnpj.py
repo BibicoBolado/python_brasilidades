@@ -29,15 +29,9 @@ class cpf_cnpj_br:
             return False
 
     def determinaValorDoc(self,doc):
-        if self.tipo_doc   == 'cnpj':
-            if self.validaCnpj(doc):
-                return doc
-            else:
-                print("CNPJ inválido")
-        elif self.tipo_doc == 'cpf':
-            if self.validaCpf(doc):
-                return doc
-            else:
-                print("CPF Inválido")
+        if self.tipo_doc   == 'cnpj' and self.validaCnpj(doc):
+            return doc
+        elif self.tipo_doc == 'cpf' and self.validaCpf(doc):
+            return doc
         else:
             print("Tipo de documento Inválido")

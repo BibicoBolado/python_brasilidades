@@ -5,7 +5,7 @@ class BuscaEndereco:
         if self.validaCep(str(cep)):
             self.cep = str(cep)
         else:
-            raise NameError('CEP inválido')
+            raise ValueError('CEP inválido')
 
     def __str__(self):
         return '{}-{}'.format(self.cep[:5],self.cep[5:])
