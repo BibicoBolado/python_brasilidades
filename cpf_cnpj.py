@@ -1,37 +1,54 @@
 from validate_docbr import CPF,CNPJ
 
-class cpf_cnpj_br:
-    def __init__(self,doc="",tipo_doc=""):
-        self.tipo_doc   = tipo_doc.lower()
-        self.doc        = self.determinaValorDoc(str(doc))
+class DocFactory:
+    @staticmethod
+    def factory(doc):
+        docStr = str(doc)
+        if len(docStr) == 14:
+            return DocCnpj(docStr)
+        if len(docStr) == 11:
+            return DocCpf(docStr)
+        else:
+            raise ValueError("Quantidade de caracteres inválida")
+
+class DocCpf:
+    def __init__(self,cpf):
+        if self.validaCpf(cpf):
+            self.cpf = cpf
+        else:
+            raise ValueError("CPF inválido")
 
     def __str__(self):
-        if self.tipo_doc=='cnpj':
-            mascara_cnpj = CNPJ()
-            return mascara_cnpj.mask(self.doc)
-        else:
-            mascara_cpf = CPF()
-            return mascara_cpf.mask(self.doc)
-
+        return self.formatCpf(self.cpf)
 
     def validaCpf(self,cpf):
-        if cpf:
-            valida_cpf = CPF()
-            return valida_cpf.validate(cpf)
-        else:
-            return False
+        valida_cpf = CPF()
+        return valida_cpf.validate(cpf)
 
-    def validaCnpj(self,cnpj):
-        if cnpj:
-            valida_cnpj = CNPJ()
-            return valida_cnpj.validate(cnpj)
-        else:
-            return False
+    @staticmethod
+    def formatCpf(cpf):
+        mascara_cpf = CPF()
+        return mascara_cpf.mask(cpf)
 
-    def determinaValorDoc(self,doc):
-        if self.tipo_doc   == 'cnpj' and self.validaCnpj(doc):
-            return doc
-        elif self.tipo_doc == 'cpf' and self.validaCpf(doc):
-            return doc
+
+class DocCnpj:
+    def __init__(self, cnpj):
+        if self.validaCnpj(cnpj):
+            self.cnpj = cnpj
         else:
-            print("Tipo de documento Inválido")
+            raise ValueError("CNPJ Inválido")
+
+    def __str__(self):
+        return self.formatCnpj(self.cnpj)
+
+    def validaCnpj(self, cnpj):
+        valida_cnpj = CNPJ()
+        return valida_cnpj.validate(cnpj)
+
+    @staticmethod
+    def formatCnpj(cnpj):
+        mascara_cnpj = CNPJ()
+        return mascara_cnpj.mask(cnpj)
+
+cpfRodrigo = DocFactory.factory(20881175000162)
+print(cpfRodrigo)
